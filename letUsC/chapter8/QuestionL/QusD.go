@@ -22,63 +22,105 @@ func main() {
 	n := 15
 
 	var loop, move string
+	var isContinue bool
 	/* To move Right:A Left:D Down:W up:S */
 	fmt.Println("Move 0 with the help of W,A,S,D key")
 	for loop := "continue"; loop == "continue"; {
 		fmt.Println("Enter your move")
 		fmt.Scanln(&move)
-		if move == "A" {
-			if n == 0 || n == 4 || n == 8 || n == 12 {
-				continue
-			} else {
-				Swap(&array[n], &array[n-1])
-				Result(array)
-				n = n - 1
-			}
+		n, isContinue = CheckGameMovement(move, n, array)
+		if isContinue {
+			continue
 		}
-		if move == "D" {
-			if n == 3 || n == 7 || n == 11 || n == 15 {
-				continue
-			} else {
-				Swap(&array[n], &array[n+1])
-				Result(array)
-				n = n + 1
-			}
-		}
-		if move == "W" {
-			if n == 0 || n == 1 || n == 2 || n == 3 {
-				continue
-			} else {
-				Swap(&array[n], &array[n-4])
-				Result(array)
-				n = n - 4
-			}
-		}
-		if move == "S" {
-			if n == 12 || n == 13 || n == 14 || n == 15 {
-				continue
-			} else {
-				Swap(&array[n], &array[n+4])
-				Result(array)
-				n = n + 4
-			}
-		}
-		for i := 0; i < 16; i++ {
-			if array[i] != testA[i] || array[i] != testB[i] {
-				loop = "continue"
-			} else {
-				loop = "won"
-			}
-		}
+		loop = CheckGameWonORToContinue(array, testA, testB)
 		fmt.Println("enter continue if you want to continue the game")
 		fmt.Scanln(&loop)
 	}
+	PrintGameResult(loop)
+	return
+}
+
+func AddMatrixInArray() {
+
+}
+
+func PrintGameResult(loop string) {
 	if loop == "won" {
 		fmt.Println("You won the game")
 	} else {
 		fmt.Println("Try again next time you Break the game")
 	}
 	return
+}
+
+func CheckGameMovement(move string, n int, array [16]int) (number int, isContinue bool) {
+	switch move {
+	case "A":
+		n, isContinue = HandleCaseA(n, array)
+	case "D":
+		n, isContinue = HandleCaseD(n, array)
+	case "W":
+		n, isContinue = HandleCaseW(n, array)
+	case "S":
+		n, isContinue = HandleCaseW(n, array)
+	}
+	return
+}
+
+func CheckGameWonORToContinue(array, testA, testB [16]int) (loop string) {
+	for i := 0; i < 16; i++ {
+		if array[i] != testA[i] || array[i] != testB[i] {
+			loop = "continue"
+		} else {
+			loop = "won"
+		}
+	}
+	return
+}
+
+func HandleCaseA(n int, array [16]int) (number int, isContinue bool) {
+	if n == 0 || n == 4 || n == 8 || n == 12 {
+		isContinue = true
+	} else {
+		Swap(&array[n], &array[n-1])
+		Result(array)
+		n = n - 1
+	}
+	return n, isContinue
+}
+
+func HandleCaseD(n int, array [16]int) (number int, isContinue bool) {
+	if n == 3 || n == 7 || n == 11 || n == 15 {
+		isContinue = true
+	} else {
+		Swap(&array[n], &array[n+1])
+		Result(array)
+		n = n + 1
+	}
+	return n, isContinue
+}
+
+func HandleCaseW(n int, array [16]int) (number int, isContinue bool) {
+	if n == 0 || n == 1 || n == 2 || n == 3 {
+		isContinue = true
+	} else {
+		Swap(&array[n], &array[n-4])
+		Result(array)
+		n = n - 4
+	}
+	return n, isContinue
+}
+
+func HandleCaseS(n int, array [16]int) (number int, isContinue bool) {
+	if n == 12 || n == 13 || n == 14 || n == 15 {
+		isContinue = true
+	} else {
+		Swap(&array[n], &array[n+4])
+		Result(array)
+		n = n + 4
+	}
+
+	return n, isContinue
 }
 
 /* This function is used for swap the value */
