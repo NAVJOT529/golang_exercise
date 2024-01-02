@@ -26,6 +26,7 @@ func main() {
 	/* To move Right:A Left:D Down:W up:S */
 	fmt.Println("Move 0 with the help of W,A,S,D key")
 	for loop := "continue"; loop == "continue"; {
+		fmt.Println("value of n is", n)
 		fmt.Println("Enter your move")
 		fmt.Scanln(&move)
 		n, isContinue = CheckGameMovement(move, n, array)
@@ -33,15 +34,12 @@ func main() {
 			continue
 		}
 		loop = CheckGameWonORToContinue(array, testA, testB)
-		fmt.Println("enter continue if you want to continue the game")
-		fmt.Scanln(&loop)
+		loop = "continue"
+		//fmt.Println("enter continue if you want to continue the game")
+		//fmt.Scanln(&loop)
 	}
 	PrintGameResult(loop)
 	return
-}
-
-func AddMatrixInArray() {
-
 }
 
 func PrintGameResult(loop string) {
@@ -64,7 +62,7 @@ func CheckGameMovement(move string, n int, array [16]int) (number int, isContinu
 	case "S":
 		n, isContinue = HandleCaseW(n, array)
 	}
-	return
+	return n, isContinue
 }
 
 func CheckGameWonORToContinue(array, testA, testB [16]int) (loop string) {
